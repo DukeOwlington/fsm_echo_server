@@ -1,0 +1,34 @@
+#ifndef FSM_H_INCLUDED
+#define FSM_H_INCLUDED
+
+#define EVENTS_COUNT 4
+#define STATES_COUNT 3
+#define EVENT_QUEUE_SIZE 4
+
+typedef enum STATE {
+  STATE_INVALID,
+  STATE_TURNED_OFF,
+  STATE_IDLE
+} STATE;
+
+typedef enum EVENT {
+  EVENT_INITIALIZE,
+  EVENT_RECEIVE,
+  EVENT_SEND,
+  EVENT_TURN_OFF
+} EVENT;
+
+typedef int (*TPF)();
+typedef struct TRANSITION {
+  STATE next_state;
+  TPF action;
+} TRANSITION;
+
+TRANSITION trans_tbl[EVENTS_COUNT][STATES_COUNT] = {
+  {{STATE_INVALID, 0}, {STATE_IDLE, InitializeServer}, {STATE_INVALID, 0}},
+  {{STATE_INVALID, 0}, {STATE_TURNED_OFF, 0}, {STATE_IDLE, ReceiveMessage}},
+  {{STATE_INVALID, 0}, {STATE_TURNED_OFF, 0}, {STATE_IDLE, SendMessage}},
+  {{STATE_INVALID, 0}, {STATE_TURNED_OFF, 0}, {STATE_IDLE, TurnOff}}
+};
+
+#endif
